@@ -1,0 +1,1577 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ikiguy AI Agent</title>
+    <style>
+      /* Reset and base styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Arial", sans-serif;
+        line-height: 1.6;
+      }
+
+      /* Header styles */
+      .header {
+        background: linear-gradient(135deg, #e0f2f1 0%, #80cbc4 100%);
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #004d40;
+      }
+
+      .nav ul {
+        list-style: none;
+        display: flex;
+      }
+
+      .nav ul li {
+        margin-left: 1.5rem;
+      }
+
+      .nav ul li a {
+        text-decoration: none;
+        color: #00695c;
+        font-weight: 500;
+        transition: color 0.3s ease;
+      }
+
+      .nav ul li a:hover {
+        color: #004d40;
+      }
+
+      .hero {
+        background-color: #f5f5f5;
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-content {
+        text-align: center;
+        max-width: 800px;
+        padding: 2rem;
+        z-index: 1;
+      }
+
+      .hero h1 {
+        font-size: 3rem;
+        color: #004d40;
+        margin-bottom: 1rem;
+      }
+
+      .hero p {
+        font-size: 1.2rem;
+        color: #00695c;
+        margin-bottom: 2rem;
+      }
+
+      .cta-button {
+        display: inline-block;
+        padding: 1rem 2rem;
+        background-color: #ff6f00;
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+      }
+
+      .cta-button:hover {
+        background-color: #ff8f00;
+      }
+
+      .ikigai-bg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: 100%;
+        opacity: 0.1;
+        z-index: 0;
+      }
+
+      .circle {
+        position: absolute;
+        border-radius: 50%;
+        opacity: 0.7;
+      }
+
+      .circle-1 {
+        width: 300px;
+        height: 300px;
+        background-color: #b2dfdb;
+        top: 20%;
+        left: 20%;
+      }
+
+      .circle-2 {
+        width: 350px;
+        height: 350px;
+        background-color: #80cbc4;
+        top: 10%;
+        right: 20%;
+      }
+
+      .circle-3 {
+        width: 400px;
+        height: 400px;
+        background-color: #4db6ac;
+        bottom: 10%;
+        left: 30%;
+      }
+
+      .circle-4 {
+        width: 320px;
+        height: 320px;
+        background-color: #26a69a;
+        bottom: 15%;
+        right: 25%;
+      }
+      .about-ikigai {
+        padding: 4rem 2rem;
+        background-color: #ffffff;
+        text-align: center;
+      }
+
+      .about-ikigai h2 {
+        font-size: 2.5rem;
+        color: #004d40;
+        margin-bottom: 2rem;
+      }
+
+      .about-content {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .about-content p {
+        font-size: 1.1rem;
+        color: #00695c;
+        margin-bottom: 2rem;
+      }
+
+      .ikigai-diagram {
+        position: relative;
+        width: 400px;
+        height: 400px;
+        margin: 3rem auto;
+      }
+
+      .ikigai-circle {
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: white;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .ikigai-circle:hover {
+        transform: scale(1.1);
+        z-index: 10;
+      }
+
+      .circle-1 {
+        background-color: rgba(244, 67, 54, 0.7);
+        top: 0;
+        left: 50px;
+      }
+
+      .circle-2 {
+        background-color: rgba(33, 150, 243, 0.7);
+        top: 0;
+        right: 50px;
+      }
+
+      .circle-3 {
+        background-color: rgba(76, 175, 80, 0.7);
+        bottom: 0;
+        left: 50px;
+      }
+
+      .circle-4 {
+        background-color: rgba(255, 193, 7, 0.7);
+        bottom: 0;
+        right: 50px;
+      }
+
+      .ikigai-center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        border: 2px solid #004d40;
+        border-radius: 50%;
+        width: 100px;
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: #004d40;
+      }
+
+      .key-points {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        margin-top: 3rem;
+      }
+
+      .key-point {
+        flex-basis: calc(25% - 2rem);
+        margin: 1rem;
+        padding: 1rem;
+        background-color: #e0f2f1;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .key-point h3 {
+        color: #00695c;
+        margin-bottom: 0.5rem;
+      }
+
+      .key-point p {
+        font-size: 0.9rem;
+        color: #004d40;
+      }
+
+      @media (max-width: 768px) {
+        .key-point {
+          flex-basis: calc(50% - 2rem);
+        }
+      }
+
+      @media (max-width: 480px) {
+        .key-point {
+          flex-basis: 100%;
+        }
+      }
+      .how-it-works {
+        background-color: #f5f5f5;
+        padding: 4rem 0;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+      }
+
+      .section-title {
+        text-align: center;
+        font-size: 2.5rem;
+        color: #333;
+        margin-bottom: 3rem;
+      }
+
+      .steps {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+
+      .step {
+        flex-basis: calc(33.333% - 2rem);
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 2rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: transform 0.3s ease;
+      }
+
+      .step:hover {
+        transform: translateY(-5px);
+      }
+
+      .step-icon {
+        font-size: 3rem;
+        color: #004d40;
+        margin-bottom: 1rem;
+      }
+
+      .step-title {
+        font-size: 1.5rem;
+        color: #333;
+        margin-bottom: 1rem;
+      }
+
+      .step-description {
+        color: #666;
+        margin-bottom: 1.5rem;
+      }
+
+      .step-animation {
+        height: 150px;
+        background-color: #e0f2f1;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        color: #004d40;
+      }
+
+      /* Responsive design */
+      @media (max-width: 992px) {
+        .step {
+          flex-basis: calc(50% - 1rem);
+          margin-bottom: 2rem;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .step {
+          flex-basis: 100%;
+        }
+      }
+
+      .features-highlight {
+        background-color: #ffffff;
+        padding: 4rem 0;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+      }
+
+      .section-title {
+        text-align: center;
+        font-size: 2.5rem;
+        color: #333;
+        margin-bottom: 3rem;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+      }
+
+      .feature {
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        padding: 2rem;
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .feature:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .feature-icon {
+        width: 64px;
+        height: 64px;
+        margin: 0 auto 1rem;
+        color: #004d40;
+      }
+
+      .feature-icon svg {
+        width: 100%;
+        height: 100%;
+      }
+
+      .feature-title {
+        font-size: 1.25rem;
+        color: #333;
+        margin-bottom: 0.5rem;
+      }
+
+      .feature-description {
+        color: #666;
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+
+      @media (max-width: 768px) {
+        .features-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .getting-started {
+        background-color: #f5f5f5;
+        padding: 4rem 0;
+        overflow: hidden;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+      }
+
+      .content {
+        flex: 1;
+      }
+
+      .section-title {
+        font-size: 2.5rem;
+        color: #333;
+        margin-bottom: 1.5rem;
+      }
+
+      .section-description {
+        color: #666;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+      }
+
+      .cta-button {
+        display: inline-block;
+        background-color: #004d40;
+        color: #ffffff;
+        padding: 0.75rem 1.5rem;
+        font-size: 1.1rem;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+      }
+
+      .cta-button:hover {
+        background-color: #00695c;
+      }
+
+      .visual {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .garden-image {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          flex-direction: column;
+        }
+
+        .content,
+        .visual {
+          width: 100%;
+        }
+
+        .garden-image {
+          margin-top: 2rem;
+        }
+      }
+
+      .footer {
+        background-color: #004d40;
+        color: #ffffff;
+        padding: 3rem 0 1.5rem;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+      }
+
+      .footer-content {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 2rem;
+      }
+
+      .footer-logo .logo {
+        max-width: 120px;
+      }
+
+      .footer-links h3,
+      .footer-social h3,
+      .footer-newsletter h3 {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+      }
+
+      .footer-links ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .footer-links li {
+        margin-bottom: 0.5rem;
+      }
+
+      .footer-links a,
+      .social-icon {
+        color: #ffffff;
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      .footer-links a:hover,
+      .social-icon:hover {
+        color: #80cbc4;
+      }
+
+      .social-icons {
+        display: flex;
+        gap: 1rem;
+      }
+
+      .social-icon svg {
+        width: 24px;
+        height: 24px;
+      }
+
+      .newsletter-form {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .newsletter-form input {
+        flex-grow: 1;
+        padding: 0.5rem;
+        border: none;
+        border-radius: 4px;
+      }
+
+      .newsletter-form button {
+        background-color: #80cbc4;
+        color: #004d40;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .newsletter-form button:hover {
+        background-color: #b2dfdb;
+      }
+
+      .footer-bottom {
+        margin-top: 2rem;
+        text-align: center;
+        font-size: 0.9rem;
+      }
+
+      @media (max-width: 768px) {
+        .footer-content {
+          flex-direction: column;
+        }
+
+        .footer-logo,
+        .footer-links,
+        .footer-social,
+        .footer-newsletter {
+          width: 100%;
+        }
+      }
+
+
+        /* Dark theme styles */
+        body.dark-theme {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        .dark-theme .header {
+            background: linear-gradient(135deg, #1a2935 0%, #2c3e50 100%);
+        }
+
+        .dark-theme .logo {
+            color: #4db6ac;
+        }
+
+        .dark-theme .nav ul li a {
+            color: #81d4fa;
+        }
+
+        .dark-theme .nav ul li a:hover {
+            color: #4db6ac;
+        }
+
+        .dark-theme .hero {
+            background-color: #1e1e1e;
+        }
+
+        .dark-theme .hero h1 {
+            color: #4db6ac;
+        }
+
+        .dark-theme .hero p {
+            color: #81d4fa;
+        }
+
+        .dark-theme .cta-button {
+            background-color: #ff6f00;
+            color: #121212;
+        }
+
+        .dark-theme .cta-button:hover {
+            background-color: #ff8f00;
+        }
+
+        .dark-theme .about-ikigai {
+            background-color: #1e1e1e;
+        }
+
+        .dark-theme .about-ikigai h2 {
+            color: #4db6ac;
+        }
+
+        .dark-theme .about-content p {
+            color: #81d4fa;
+        }
+
+        .dark-theme .ikigai-center {
+            background-color: #121212;
+            border-color: #4db6ac;
+            color: #4db6ac;
+        }
+
+        .dark-theme .key-point {
+            background-color: #2c3e50;
+        }
+
+        .dark-theme .key-point h3 {
+            color: #4db6ac;
+        }
+
+        .dark-theme .key-point p {
+            color: #81d4fa;
+        }
+
+        .dark-theme .how-it-works,
+        .dark-theme .features-highlight,
+        .dark-theme .getting-started {
+            background-color: #1e1e1e;
+        }
+
+        .dark-theme .section-title {
+            color: #4db6ac;
+        }
+
+        .dark-theme .step,
+        .dark-theme .feature {
+            background-color: #2c3e50;
+        }
+
+        .dark-theme .step-title,
+        .dark-theme .feature-title {
+            color: #81d4fa;
+        }
+
+        .dark-theme .step-description,
+        .dark-theme .feature-description,
+        .dark-theme .section-description {
+            color: #e0e0e0;
+        }
+
+        .dark-theme .step-animation {
+            background-color: #1a2935;
+            color: #4db6ac;
+        }
+
+        .dark-theme .footer {
+            background-color: #1a2935;
+        }
+
+        .dark-theme .footer-links a:hover,
+        .dark-theme .social-icon:hover {
+            color: #4db6ac;
+        }
+
+        .dark-theme .newsletter-form input {
+            background-color: #2c3e50;
+            color: #e0e0e0;
+        }
+
+        .dark-theme .newsletter-form button {
+            background-color: #4db6ac;
+            color: #121212;
+        }
+
+        .dark-theme .newsletter-form button:hover {
+            background-color: #81d4fa;
+        }
+
+        /* Theme toggle switch */
+        .theme-switch-wrapper {
+            display: flex;
+            align-items: center;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .theme-switch {
+            display: inline-block;
+            height: 34px;
+            position: relative;
+            width: 60px;
+        }
+
+        .theme-switch input {
+            display: none;
+        }
+
+        .slider {
+            background-color: #ccc;
+            bottom: 0;
+            cursor: pointer;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            transition: .4s;
+        }
+
+        .slider:before {
+            background-color: #fff;
+            bottom: 4px;
+            content: "";
+            height: 26px;
+            left: 4px;
+            position: absolute;
+            transition: .4s;
+            width: 26px;
+        }
+
+        input:checked + .slider {
+            background-color: #4db6ac;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+
+        .japanese-garden {
+  width: 100%;
+  height: 400px;
+  position: relative;
+  overflow: hidden;
+  background-color: #e6f3ec;
+}
+
+.sky {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60%;
+  background: linear-gradient(to bottom, #87ceeb, #e6f3ec);
+}
+
+.mountain {
+  position: absolute;
+  bottom: 40%;
+  width: 0;
+  height: 0;
+  border-left: 150px solid transparent;
+  border-right: 150px solid transparent;
+}
+
+.mountain-1 {
+  left: -50px;
+  border-bottom: 200px solid #4a6741;
+}
+
+.mountain-2 {
+  left: 100px;
+  border-bottom: 250px solid #3d5635;
+}
+
+.mountain-3 {
+  right: -50px;
+  border-bottom: 180px solid #567d49;
+}
+
+.tree {
+  position: absolute;
+  bottom: 20%;
+  width: 0;
+  height: 0;
+}
+
+.tree::before {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 30px;
+  background: #3d2817;
+  bottom: 0;
+  left: -5px;
+}
+
+.tree::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 25px solid transparent;
+  border-right: 25px solid transparent;
+  border-bottom: 60px solid #1a472a;
+  bottom: 30px;
+  left: -25px;
+}
+
+.tree-1 {
+  left: 10%;
+}
+
+.tree-2 {
+  left: 50%;
+  transform: scale(1.2);
+}
+
+.tree-3 {
+  right: 15%;
+  transform: scale(0.8);
+}
+
+.path {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 100%;
+  background: linear-gradient(to right, #d2b48c 0%, #e6c9a8 20%, #d2b48c 50%, #e6c9a8 80%, #d2b48c 100%);
+}
+
+.path::before, .path::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 10px;
+  background: repeating-linear-gradient(to bottom, #8b4513, #8b4513 10px, transparent 10px, transparent 20px);
+}
+
+.path::before {
+  left: -10px;
+}
+
+.path::after {
+  right: -10px;
+}
+
+.lantern {
+  position: absolute;
+  bottom: 15%;
+  right: 25%;
+  width: 30px;
+  height: 50px;
+  background: #d2691e;
+}
+
+.lantern::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: -10px;
+  width: 50px;
+  height: 20px;
+  background: #8b4513;
+  border-radius: 50% 50% 0 0;
+}
+
+.lantern::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 5px;
+  width: 20px;
+  height: 10px;
+  background: #8b4513;
+}
+.step-animation {
+    height: 150px;
+    background-color: #e0f2f1;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Animation 1: Question and Answer */
+  .question-bubble, .answer-bubble {
+    width: 40px;
+    height: 40px;
+    background-color: #004d40;
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    position: absolute;
+    opacity: 0;
+  }
+
+  .question-bubble {
+    left: 30%;
+    animation: bubbleAppear 2s infinite;
+  }
+
+  .answer-bubble {
+    right: 30%;
+    animation: bubbleAppear 2s infinite 1s;
+  }
+
+  @keyframes bubbleAppear {
+    0%, 100% { opacity: 0; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1); }
+  }
+
+  /* Animation 2: Journal Writing */
+  .journal {
+    width: 80px;
+    height: 100px;
+    background-color: #ffffff;
+    border: 2px solid #004d40;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .journal-line {
+    height: 2px;
+    background-color: #004d40;
+    margin: 20px 10px;
+    width: 0;
+    animation: writeLine 2s infinite;
+  }
+
+  .journal-line:nth-child(2) {
+    animation-delay: 0.5s;
+  }
+
+  .journal-line:nth-child(3) {
+    animation-delay: 1s;
+  }
+
+  @keyframes writeLine {
+    0% { width: 0; }
+    50% { width: 60px; }
+    100% { width: 60px; }
+  }
+
+  .pen {
+    width: 6px;
+    height: 60px;
+    background-color: #004d40;
+    position: absolute;
+    right: 25%;
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+    animation: movePen 2s infinite;
+  }
+
+  @keyframes movePen {
+    0%, 100% { transform: translateY(-50%) rotate(45deg) translateX(0); }
+    50% { transform: translateY(-50%) rotate(45deg) translateX(-20px); }
+  }
+
+  /* Animation 3: Insight Generation */
+  .insight-bubble {
+    width: 80px;
+    height: 80px;
+    background-color: #004d40;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: pulseBubble 2s infinite;
+  }
+
+  .insight-dot {
+    width: 10px;
+    height: 10px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    margin: 0 5px;
+    animation: fadeDots 1.5s infinite;
+  }
+
+  .insight-dot:nth-child(2) {
+    animation-delay: 0.5s;
+  }
+
+  .insight-dot:nth-child(3) {
+    animation-delay: 1s;
+  }
+
+  @keyframes pulseBubble {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+
+  @keyframes fadeDots {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+
+
+    .how-it-works {
+    background-color: #f5f5f5;
+    padding: 4rem 0;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 3rem;
+  }
+
+  .steps {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .step {
+    flex-basis: calc(33.333% - 2rem);
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+
+  .step:hover {
+    transform: translateY(-5px);
+  }
+
+  .step-image {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 1.5rem;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+    color: #fff;
+    transition: transform 0.3s ease;
+  }
+
+  .step:hover .step-image {
+    transform: scale(1.1);
+  }
+
+  .placeholder-questions {
+    background-color: #4db6ac;
+    position: relative;
+  }
+
+  .placeholder-questions::before {
+    content: "?";
+    font-weight: bold;
+  }
+
+  .placeholder-journal {
+    background-color: #7e57c2;
+    position: relative;
+  }
+
+  .placeholder-journal::before {
+    content: "✎";
+    font-weight: bold;
+  }
+
+  .placeholder-insights {
+    background-color: #ffa726;
+    position: relative;
+  }
+
+  .placeholder-insights::before {
+    content: "💡";
+    font-weight: bold;
+  }
+
+  .step-title {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 1rem;
+  }
+
+  .step-description {
+    color: #666;
+  }
+
+  @media (max-width: 992px) {
+    .step {
+      flex-basis: calc(50% - 1rem);
+      margin-bottom: 2rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .step {
+      flex-basis: 100%;
+    }
+  }
+  }
+
+  .header {
+            background: linear-gradient(135deg, #e0f2f1 0%, #80cbc4 100%);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-text {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #004d40;
+            margin-right: 1rem;
+        }
+
+        .logo-image {
+            max-width: 100px;
+            height: auto;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .logo-container {
+                margin-bottom: 1rem;
+            }
+
+            .nav ul {
+                flex-direction: column;
+            }
+
+            .nav ul li {
+                margin-left: 0;
+                margin-bottom: 0.5rem;
+            }
+        }
+    </style>
+  </head>
+  <body>
+
+
+    <div class="theme-switch-wrapper"></div>
+        <label class="theme-switch" for="checkbox">
+            <input type="checkbox" id="checkbox" />
+            <div class="slider round"></div>
+        </label>
+    </div>
+    <header class="header">
+      <img src="ikiguy.png" alt="Ikiguy Logo" class="logo-image">
+      <nav class="nav">
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#get-started">Coming Soon</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section class="hero" id="home">
+      <div class="hero-content">
+        <h1>Discover Your Ikigai: Your Path to Purpose and Fulfillment</h1>
+        <p>
+          Let AI guide you to your life's meaning through daily reflection and
+          personalized insights
+        </p>
+        <a href="#" class="cta-button">Begin Your Journey</a>
+      </div>
+      <div class="ikigai-bg">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
+        <div class="circle circle-4"></div>
+      </div>
+    </section>
+
+    <section class="about-ikigai" id="about">
+      <div class="about-content">
+        <h2>What is Ikigai?</h2>
+        <p>
+          Ikigai is a Japanese concept that means "a reason for being." It's the
+          intersection of four elements that can lead to a fulfilling life and
+          career.
+        </p>
+
+        <div class="ikigai-diagram">
+          <div class="ikigai-circle circle-1">What you love</div>
+          <div class="ikigai-circle circle-2">What you're good at</div>
+          <div class="ikigai-circle circle-3">What the world needs</div>
+          <div class="ikigai-circle circle-4">What you can be paid for</div>
+          <div class="ikigai-center">Ikigai</div>
+        </div>
+
+        <div class="key-points">
+          <div class="key-point">
+            <h3>What you love</h3>
+            <p>Your passion and what brings you joy</p>
+          </div>
+          <div class="key-point">
+            <h3>What you're good at</h3>
+            <p>Your skills and strengths</p>
+          </div>
+          <div class="key-point">
+            <h3>What the world needs</h3>
+            <p>How you can contribute to society</p>
+          </div>
+          <div class="key-point">
+            <h3>What you can be paid for</h3>
+            <p>Activities that can support your livelihood</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="how-it-works" id="features">
+      <div class="container">
+        <h2 class="section-title">Your Personal AI Guide to Self-Discovery</h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-image placeholder-questions"></div>
+            <h3 class="step-title">Answer Daily Questions</h3>
+            <p class="step-description">Engage with our AI through thoughtful daily prompts</p>
+          </div>
+          <div class="step">
+            <div class="step-image placeholder-journal"></div>
+            <h3 class="step-title">Reflect in Your Journal</h3>
+            <p class="step-description">Record your thoughts and experiences in your digital journal</p>
+          </div>
+          <div class="step">
+            <div class="step-image placeholder-insights"></div>
+            <h3 class="step-title">Receive Personalized Insights</h3>
+            <p class="step-description">Get AI-powered suggestions to help you find your Ikigai</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features-highlight">
+      <div class="container">
+        <h2 class="section-title">Unlock Your Potential</h2>
+        <div class="features-grid">
+          <div class="feature">
+            <div class="feature-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-cpu"
+              >
+                <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                <rect x="9" y="9" width="6" height="6"></rect>
+                <line x1="9" y1="1" x2="9" y2="4"></line>
+                <line x1="15" y1="1" x2="15" y2="4"></line>
+                <line x1="9" y1="20" x2="9" y2="23"></line>
+                <line x1="15" y1="20" x2="15" y2="23"></line>
+                <line x1="20" y1="9" x2="23" y2="9"></line>
+                <line x1="20" y1="14" x2="23" y2="14"></line>
+                <line x1="1" y1="9" x2="4" y2="9"></line>
+                <line x1="1" y1="14" x2="4" y2="14"></line>
+              </svg>
+            </div>
+            <h3 class="feature-title">AI-Powered Insights</h3>
+            <p class="feature-description">
+              Gain deep understanding of your passions and purpose through
+              advanced AI analysis.
+            </p>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-book-open"
+              >
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+              </svg>
+            </div>
+            <h3 class="feature-title">Daily Journaling</h3>
+            <p class="feature-description">
+              Reflect on your experiences and thoughts with our intuitive
+              journaling interface.
+            </p>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-help-circle"
+              >
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+            </div>
+            <h3 class="feature-title">Personalized Question Sets</h3>
+            <p class="feature-description">
+              Engage with tailored questions that evolve based on your unique
+              journey.
+            </p>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-trending-up"
+              >
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                <polyline points="17 6 23 6 23 12"></polyline>
+              </svg>
+            </div>
+            <h3 class="feature-title">Progress Tracking</h3>
+            <p class="feature-description">
+              Visualize your growth and development on your path to discovering
+              your Ikigai.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="getting-started">
+      <div class="container">
+        <div class="content">
+          <h2 class="section-title">Begin Your Ikigai Journey Today</h2>
+          <p class="section-description">
+            Embark on a transformative path to self-discovery with Ikiguy. Our
+            AI-powered platform makes it easy to explore your passions, skills,
+            and purpose. In just minutes a day, you'll gain insights that can
+            lead to a more fulfilling life and career. Start your free trial now
+            and take the first step towards finding your Ikigai.
+          </p>
+          <a href="#" class="cta-button">Coming Soon</a>
+        </div>
+        <div class="visual">
+            <div class="japanese-garden">
+                <div class="sky"></div>
+                <div class="mountain mountain-1"></div>
+                <div class="mountain mountain-2"></div>
+                <div class="mountain mountain-3"></div>
+                <div class="tree tree-1"></div>
+                <div class="tree tree-2"></div>
+                <div class="tree tree-3"></div>
+                <div class="path"></div>
+                <div class="lantern"></div>
+              </div>
+        </div>
+      </div>
+    </section>
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-logo">
+            <img src="ikiguy.png" alt="Ikiguy Logo" class="logo" />
+          </div>
+          <div class="footer-links">
+            <h3>Quick Links</h3>
+            <ul>
+              <li><a href="#home">Home</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#features">Features</a></li>
+              <li><a href="#testimonials">Testimonials</a></li>
+              <li><a href="#privacy">Privacy Policy</a></li>
+              <li><a href="#terms">Terms of Service</a></li>
+            </ul>
+          </div>
+          <div class="footer-social">
+            <h3>Follow Us</h3>
+            <div class="social-icons">
+              <a href="#" class="social-icon" aria-label="Facebook">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="feather feather-facebook"
+                >
+                  <path
+                    d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
+                  ></path>
+                </svg>
+              </a>
+              <a href="#" class="social-icon" aria-label="Twitter">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="feather feather-twitter"
+                >
+                  <path
+                    d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"
+                  ></path>
+                </svg>
+              </a>
+              <a href="#" class="social-icon" aria-label="Instagram">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="feather feather-instagram"
+                >
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path
+                    d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
+                  ></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div class="footer-newsletter">
+            <h3>Stay Updated</h3>
+            <form class="newsletter-form">
+              <input type="email" placeholder="Enter your email" required />
+              <button type="submit">Subscribe</button>
+            </form>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2024 Ikiguy. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Placeholder for animation logic
+      document.addEventListener("DOMContentLoaded", function () {
+        const animations = document.querySelectorAll(".step-animation");
+        animations.forEach((animation, index) => {
+          animation.textContent = `Animation ${index + 1} Placeholder`;
+        });
+      });
+
+
+       // Theme toggle functionality
+       const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+        const currentTheme = localStorage.getItem('theme');
+
+        if (currentTheme) {
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            if (currentTheme === 'dark') {
+                toggleSwitch.checked = true;
+                document.body.classList.add('dark-theme');
+            }
+        }
+
+        function switchTheme(e) {
+            if (e.target.checked) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                document.body.classList.add('dark-theme');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                document.body.classList.remove('dark-theme');
+                localStorage.setItem('theme', 'light');
+            }    
+        }
+
+        toggleSwitch.addEventListener('change', switchTheme, false);
+
+       
+    </script>
+  </body>
+</html>
